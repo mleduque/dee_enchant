@@ -1,0 +1,436 @@
+BACKUP ~enchant/backup~ 
+AUTHOR ~daniel.pennyway@gmail.com - Special thanks to subtledoctor, Erg, argent77, kjeron, and lansounet~
+
+
+BEGIN ~Enchant the Missile Launchers~
+
+  // Every ranged weapon launcher that has an enchantment value higher than 0 bestows
+  // that enchantment on its ammunition.
+
+  COPY_EXISTING_REGEXP GLOB ~^.+\.itm~ ~override~
+    PATCH_IF (%SOURCE_SIZE% > 0x71) BEGIN
+      READ_SHORT 0x1c type
+      PATCH_IF (type = 0x0f || type = 0x12 || type = 0x1b) BEGIN // double-check those values
+        READ_LONG 0x60 enchantment
+        PATCH_IF (enchantment > 0) BEGIN
+          LPF ADD_ITEM_EQEFFECT
+            INT_VAR opcode = 345 target = 1 timing = 2 parameter1 = EVAL enchantment special = 1
+          END // double-check how this function works and which variables need to be set
+        END
+      END
+    END
+  BUT_ONLY_IF_IT_CHANGES
+
+BEGIN ~ Ammunition Recovery~
+  
+  // Ammunition purchased in stores is modified to use the charged ammunition instead.
+  // Ammunition found in the wild is unchanged.
+
+  COPY ~enchant/recovery~ ~override~
+
+  COPY_EXISTING_REGEXP GLOB ~^.+\.sto~ ~override~
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 20 charges1 = 20
+      STR_VAR old_item = ~AROW01~ new_item = ~DPAROW01~
+    END
+
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 20 charges1 = 20
+      STR_VAR old_item = ~BOLT01~ new_item = ~DPBOLT01~
+    END
+
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 20 charges1 = 20
+      STR_VAR old_item = ~BULL01~ new_item = ~DPBULL01~
+    END
+
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 20 charges1 = 15
+      STR_VAR old_item = ~DART01~ new_item = ~DPDART01~
+    END
+
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 20 charges1 = 5
+      STR_VAR old_item = ~DAGG05~ new_item = ~DPDAGG05~
+    END
+
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 20 charges1 = 2
+      STR_VAR old_item = ~AX1H04~ new_item = ~DPAX1H04~
+    END
+
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 3 charges1 = 10
+      STR_VAR old_item = ~AROW02~   new_item = ~DPAROW02~
+    END
+
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 3 charges1 = 10
+      STR_VAR old_item = ~AROW11~   new_item = ~DPAROW11~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 3 charges1 = 10
+      STR_VAR old_item = ~AROW1A~   new_item = ~DPAROW1A~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 3 charges1 = 10
+      STR_VAR old_item = ~AROW15~   new_item = ~DPAROW15~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 3 charges1 = 10
+      STR_VAR old_item = ~BULL05~   new_item = ~DPBULL05~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 3 charges1 = 10
+      STR_VAR old_item = ~BULL06~   new_item = ~DPBULL06~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 3 charges1 = 10
+      STR_VAR old_item = ~BULL02~   new_item = ~DPBULL02~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 3 charges1 = 10
+      STR_VAR old_item = ~BULL03~   new_item = ~DPBULL03~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 3 charges1 = 10
+      STR_VAR old_item = ~BOLT02~   new_item = ~DPBOLT02~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 3 charges1 = 10
+      STR_VAR old_item = ~BOLT06~   new_item = ~DPBOLT06~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 3 charges1 = 10
+      STR_VAR old_item = ~BOLT09~   new_item = ~DPBOLT09~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 3 charges1 = 10
+      STR_VAR old_item = ~OHBOLT50~ new_item = ~DPBOLT50~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 2 charges1 = 5
+      STR_VAR old_item = ~AROW04~   new_item = ~DPAROW04~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 2 charges1 = 5
+      STR_VAR old_item = ~AROW08~   new_item = ~DPAROW08~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 2 charges1 = 5
+      STR_VAR old_item = ~AROW09~   new_item = ~DPAROW09~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 2 charges1 = 5
+      STR_VAR old_item = ~AROW10~   new_item = ~DPAROW10~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 2 charges1 = 5
+      STR_VAR old_item = ~BULL04~   new_item = ~DPBULL04~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 2 charges1 = 5
+      STR_VAR old_item = ~BULL07~   new_item = ~DPBULL07~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 2 charges1 = 5
+      STR_VAR old_item = ~BULL08~   new_item = ~DPBULL08~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 2 charges1 = 5
+      STR_VAR old_item = ~BULL09~   new_item = ~DPBULL09~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 2 charges1 = 5
+      STR_VAR old_item = ~BOLT03~   new_item = ~DPBOLT03~
+    END
+        
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 2 charges1 = 5
+      STR_VAR old_item = ~BOLT08~   new_item = ~DPBOLT08~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 1 charges1 = 1
+      STR_VAR old_item = ~AROW03~ new_item = ~DPAROW03~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 1 charges1 = 1
+      STR_VAR old_item = ~AROW05~ new_item = ~DPAROW05~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 1 charges1 = 1
+      STR_VAR old_item = ~AROW06~ new_item = ~DPAROW06~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 1 charges1 = 1
+      STR_VAR old_item = ~AROW07~ new_item = ~DPAROW07~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 1 charges1 = 1
+      STR_VAR old_item = ~AROW12~ new_item = ~DPAROW12~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 1 charges1 = 1
+      STR_VAR old_item = ~BOLT04~ new_item = ~DPBOLT04~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 1 charges1 = 1
+      STR_VAR old_item = ~BOLT05~ new_item = ~DPBOLT05~
+    END
+    
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 1 charges1 = 2
+      STR_VAR old_item = ~AX1H18~ new_item = ~DPAX1H18~
+    END
+
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 1 charges1 = 1
+      STR_VAR old_item = ~DAGG16~ new_item = ~DPDAGG16~
+    END
+
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 3 charges1 = 10
+      STR_VAR old_item = ~DART02~ new_item = ~DPDART02~
+    END
+
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 1 charges1 = 1
+      STR_VAR old_item = ~DART03~ new_item = ~DPDART03~
+    END
+
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 2 charges1 = 5
+      STR_VAR old_item = ~DART04~ new_item = ~DPDART04~
+    END
+
+    LPF REPLACE_STORE_ITEM
+      INT_VAR number_in_stock = 2 charges1 = 5
+      STR_VAR old_item = ~DART05~ new_item = ~DPDART05~
+    END
+
+  BUT_ONLY_IF_IT_CHANGES
+
+
+  COPY_EXISTING_REGEXP GLOB ~^.+\.are~ ~override~
+
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 10
+      STR_VAR old_item = ~AROW02~   new_item = ~DPAROW02~
+    END
+
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 10
+      STR_VAR old_item = ~AROW11~   new_item = ~DPAROW11~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 10
+      STR_VAR old_item = ~AROW1A~   new_item = ~DPAROW1A~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 10
+      STR_VAR old_item = ~AROW15~   new_item = ~DPAROW15~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 10
+      STR_VAR old_item = ~BULL05~   new_item = ~DPBULL05~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 10
+      STR_VAR old_item = ~BULL06~   new_item = ~DPBULL06~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 10
+      STR_VAR old_item = ~BULL02~   new_item = ~DPBULL02~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 10
+      STR_VAR old_item = ~BULL03~   new_item = ~DPBULL03~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 10
+      STR_VAR old_item = ~BOLT02~   new_item = ~DPBOLT02~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 10
+      STR_VAR old_item = ~BOLT06~   new_item = ~DPBOLT06~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 10
+      STR_VAR old_item = ~BOLT09~   new_item = ~DPBOLT09~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 10
+      STR_VAR old_item = ~OHBOLT50~ new_item = ~DPBOLT50~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 5
+      STR_VAR old_item = ~AROW04~   new_item = ~DPAROW04~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 5
+      STR_VAR old_item = ~AROW08~   new_item = ~DPAROW08~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 5
+      STR_VAR old_item = ~AROW09~   new_item = ~DPAROW09~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 5
+      STR_VAR old_item = ~AROW10~   new_item = ~DPAROW10~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 5
+      STR_VAR old_item = ~BULL04~   new_item = ~DPBULL04~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 5
+      STR_VAR old_item = ~BULL07~   new_item = ~DPBULL07~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 5
+      STR_VAR old_item = ~BULL08~   new_item = ~DPBULL08~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 5
+      STR_VAR old_item = ~BULL09~   new_item = ~DPBULL09~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 5
+      STR_VAR old_item = ~BOLT03~   new_item = ~DPBOLT03~
+    END
+        
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 5
+      STR_VAR old_item = ~BOLT08~   new_item = ~DPBOLT08~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 1
+      STR_VAR old_item = ~AROW03~ new_item = ~DPAROW03~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 1
+      STR_VAR old_item = ~AROW05~ new_item = ~DPAROW05~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 1
+      STR_VAR old_item = ~AROW06~ new_item = ~DPAROW06~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 1
+      STR_VAR old_item = ~AROW07~ new_item = ~DPAROW07~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 1
+      STR_VAR old_item = ~AROW12~ new_item = ~DPAROW12~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 1
+      STR_VAR old_item = ~BOLT04~ new_item = ~DPBOLT04~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 1
+      STR_VAR old_item = ~BOLT05~ new_item = ~DPBOLT05~
+    END
+    
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 2
+      STR_VAR old_item = ~AX1H18~ new_item = ~DPAX1H18~
+    END
+
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 1
+      STR_VAR old_item = ~DAGG16~ new_item = ~DPDAGG16~
+    END
+
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 10
+      STR_VAR old_item = ~DART02~ new_item = ~DPDART02~
+    END
+
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 1
+      STR_VAR old_item = ~DART03~ new_item = ~DPDART03~
+    END
+
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 5
+      STR_VAR old_item = ~DART04~ new_item = ~DPDART04~
+    END
+
+    LPF REPLACE_AREA_ITEM
+      INT_VAR charges1 = 5
+      STR_VAR old_item = ~DART05~ new_item = ~DPDART05~
+    END
+
+  BUT_ONLY_IF_IT_CHANGES
+
+BEGIN ~Custom Ammunition: Eldoth (BG:EE)~
+
+  COPY_EXISTING ~ELDOTH.cre~ ~override/ELDOTH.cre~
+    ADD_CRE_ITEM ~AROW14~ #5 #0 #0 ~IDENTIFIED~ ~QUIVER1~
+    ADD_CRE_ITEM ~BOW03~ #0 #0 #0 ~IDENTIFIED~ ~WEAPON2~
+    REMOVE_KNOWN_SPELL ~SPIN116~
+  BUT_ONLY_IF_IT_CHANGES
+
+BEGIN ~Custom Ammunition: Jan (BGII:EE)~
+
+  COPY_EXISTING ~JAN10.cre~ ~override/JAN10.cre~
+    REMOVE_KNOWN_SPELL ~SPIN827~
+  BUT_ONLY_IF_IT_CHANGES
+
+BEGIN ~Fix Fuller's Quest Bolts (BG:EE)~
+  COPY_EXISTING ~INN2616.STO~ ~override~
+    ADD_STORE_ITEM ~BOLT01~ #20 #0 #0 ~IDENTIFIED~ #1
+  BUT_ONLY_IF_IT_CHANGES
